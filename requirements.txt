@@ -1,0 +1,7 @@
+runpod
+requests
+torch
+torchvision
+ultralytics
+opencv-python-headless
+numpy
