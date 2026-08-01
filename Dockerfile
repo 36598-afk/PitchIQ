@@ -22,10 +22,11 @@ COPY path_scoring.py .
 COPY runpod_handler.py .
 
 # Model weights — baked into the image so there's no cold-start download.
-# These paths match ZONEARC_MODELS_DIR below.
-COPY models/audio_classifier.pt          /app/models/Audio_Impact/audio_classifier.pt
-COPY models/classifier_mitt_vs_bat.pt    /app/models/Visual_Impact/classifier_mitt_vs_bat.pt
-COPY models/best.pt                      /app/models/Visual_Impact/best.pt
+# These paths match what infer_pitch71.py's MODELS dict expects: BASE +
+# "/Models/Audio_Impact/..." etc, where BASE = ZONEARC_MODELS_DIR below.
+COPY models/audio_classifier.pt          /app/models/Models/Audio_Impact/audio_classifier.pt
+COPY models/classifier_mitt_vs_bat.pt    /app/models/Models/Visual_Impact/classifier_mitt_vs_bat.pt
+COPY models/best.pt                      /app/models/Models/Visual_Impact/best.pt
 
 ENV ZONEARC_MODELS_DIR=/app/models
 
