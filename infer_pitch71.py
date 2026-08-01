@@ -171,11 +171,12 @@ def get_visual_classifier_probs(frame):
 
 
 # ── ball tracking across the whole clip ───────────────────────────────────────
-BALL_DETECT_STRIDE = 4   # run detection on every Nth frame instead of every
-                          # single one. Path scoring tolerates gaps up to 5
-                          # frames, so stride=4 still leaves a comfortable
-                          # margin while cutting the number of YOLO calls to
-                          # roughly a quarter of the full frame count.
+BALL_DETECT_STRIDE = 1   # scan every frame. This was raised to 4 earlier to
+                          # speed up inference on a CPU-only laptop — on
+                          # RunPod's GPU that tradeoff is unnecessary, since
+                          # GPU inference is fast enough to check every frame
+                          # without a real time cost, and skipping frames was
+                          # only ever an accuracy tax, never a benefit here.
 BALL_BATCH_SIZE = 8      # frames per YOLO call — batching cuts per-call
                           # overhead versus one frame at a time (helps more
                           # on GPU than CPU, but still nonzero either way).
