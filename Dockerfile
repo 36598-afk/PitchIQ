@@ -25,7 +25,17 @@ COPY runpod_handler.py .
 # from the repo checkout. Git LFS pointer files (not the real binaries) were
 # being pulled in during RunPod's build, causing "invalid load key" errors.
 # GitHub Release assets are real binary downloads, sidestepping that entirely.
-RUN mkdir -p /app/models/Models/Audio_Impact /app/models/Models/Visual_Impact && \
+#
+# MODEL_VERSION exists purely to bust Docker's build cache. Docker caches a
+# RUN step based on its exact literal command text — since these curl URLs
+# never change even when the FILE behind them does, Docker was silently
+# reusing an old cached layer (the OLD best.pt) even on a "successful" build.
+# Bump the number below by 1 every time you actually replace a model file on
+# the GitHub Release, so this RUN command's text is genuinely different and
+# Docker is forced to actually re-download instead of reusing the cache.
+ARG MODEL_VERSION=2
+RUN echo "Model version: ${MODEL_VERSION}" && \
+    mkdir -p /app/models/Models/Audio_Impact /app/models/Models/Visual_Impact && \
     curl -f -L -o /app/models/Models/Audio_Impact/audio_classifier.pt "https://github.com/36598-afk/PitchIQ/releases/download/v1.0-models/audio_classifier.pt" && \
     curl -f -L -o /app/models/Models/Visual_Impact/classifier_mitt_vs_bat.pt "https://github.com/36598-afk/PitchIQ/releases/download/v1.0-models/classifier_mitt_vs_bat.pt" && \
     curl -f -L -o /app/models/Models/Visual_Impact/best.pt "https://github.com/36598-afk/PitchIQ/releases/download/v1.0-models/best.pt" && \
@@ -37,5 +47,3 @@ RUN mkdir -p /app/models/Models/Audio_Impact /app/models/Models/Visual_Impact &&
 ENV ZONEARC_MODELS_DIR=/app/models
 
 CMD ["python3", "-u", "runpod_handler.py"]
-
-# rebuild trigger
