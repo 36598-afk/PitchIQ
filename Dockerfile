@@ -37,3 +37,5 @@ RUN mkdir -p /app/models/Models/Audio_Impact /app/models/Models/Visual_Impact &&
 ENV ZONEARC_MODELS_DIR=/app/models
 
 CMD ["python3", "-u", "runpod_handler.py"]
+
+# rebuild trigger
