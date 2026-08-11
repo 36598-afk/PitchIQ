@@ -33,7 +33,7 @@ COPY runpod_handler.py .
 # Bump the number below by 1 every time you actually replace a model file on
 # the GitHub Release, so this RUN command's text is genuinely different and
 # Docker is forced to actually re-download instead of reusing the cache.
-ARG MODEL_VERSION=2
+ARG MODEL_VERSION=3
 RUN echo "Model version: ${MODEL_VERSION}" && \
     mkdir -p /app/models/Models/Audio_Impact /app/models/Models/Visual_Impact && \
     curl -f -L -o /app/models/Models/Audio_Impact/audio_classifier.pt "https://github.com/36598-afk/PitchIQ/releases/download/v1.0-models/audio_classifier.pt" && \
